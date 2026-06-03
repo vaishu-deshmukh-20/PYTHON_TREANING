@@ -1,12 +1,10 @@
 from flask import Flask
 
-print("APP2 RUN HOT AAHE")
-
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "<h1>college portal</h1>"
+    return "<h1>APP2 TESTING 12345</h1>"
 
 @app.route("/about")
 def about():
