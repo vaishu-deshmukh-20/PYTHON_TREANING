@@ -1,0 +1,21 @@
+{ % extends "base.html" %}
+{ % block title % }Home - Collage Portal{ % endblock % }
+{ % block content % }
+<h1>Welcome to Collage Portal</h1>
+<p>Total students: {{ students|length }}</p>
+<h2>Quick Stats</h2 
+<ul>
+    {% for student in students %}
+       <li>
+              {{ student.Name }} -
+              {{ student.Marks }} marks -
+              {% if student.Marks >= 90 % }
+                  Grade: A
+              { % elif student.Marks >= 80 % }
+                  Grade: B
+              { % elif student.Marks >= 70 % }
+                  Grade: C
+              { % else % }
+                  Grade: F
+              { % endif % }
+       </li>
