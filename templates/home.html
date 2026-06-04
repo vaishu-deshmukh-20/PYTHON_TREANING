@@ -1,21 +1,22 @@
-{ % extends "base.html" %}
-{ % block title % }Home - Collage Portal{ % endblock % }
-{ % block content % }
-<h1>Welcome to Collage Portal</h1>
-<p>Total students: {{ students|length }}</p>
-<h2>Quick Stats</h2 
-<ul>
-    {% for student in students %}
-       <li>
-              {{ student.Name }} -
-              {{ student.Marks }} marks -
-              {% if student.Marks >= 90 % }
-                  Grade: A
-              { % elif student.Marks >= 80 % }
-                  Grade: B
-              { % elif student.Marks >= 70 % }
-                  Grade: C
-              { % else % }
-                  Grade: F
-              { % endif % }
-       </li>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Welcome to Government Polytechnic Hingoli</h2>
+
+<p>
+<strong>📚 Learn. 🌿 Grow. 🎯 Succeed.</strong><br>
+<strong>🎓 Your future starts here with quality technical education.</strong>
+</p>
+
+<h3 style="margin-bottom:0;">Quick Links</h3>
+
+<p style="margin-top:0;">
+👉🏻 <a href="{{ url_for('home') }}">Home</a><br>
+👉🏻 <a href="{{ url_for('students_page') }}">Students</a><br>
+👉🏻 <a href="{{ url_for('notice') }}">Notice</a><br>
+👉🏻 <a href="{{ url_for('about') }}">About College</a>
+</p>
+
+{% endblock %}
+

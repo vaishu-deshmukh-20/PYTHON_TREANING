@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Marks Records</h1>
+
+<ul>
+    {% for s in students %}
+        <li>{{ s.name }} - {{ s.marks }} marks</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}My App{% endblock %}</title>
-  </head>
-  <body>
-      <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('students') }}">Students</a>
-        <a href="{{ url_for('about') }}">About</a>
-      </nav>
+<head>
+    <title>Government Polytechnic Hingoli</title>
+</head>
+<body>
 
+<h2>🏫 Government Polytechnic Hingoli Portal</h2>
 
-      <hr>
+<hr>
 
-    </nav>
+<!-- FINAL NAVBAR ORDER -->
+<a href="{{ url_for('home') }}">Home</a> |
+<a href="{{ url_for('about') }}">About</a> |
+<a href="{{ url_for('students_page') }}">Students</a> |
+<a href="{{ url_for('notice') }}">Notice</a>
 
-    {% block content %}
-    {% endblock %}
+<hr>
 
-  <hr>
-  <small>Collage Portal - Built with python </small>
-  </body>
+{% block content %}{% endblock %}
+
+</body>
 </html>
