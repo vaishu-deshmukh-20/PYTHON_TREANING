@@ -2,21 +2,66 @@
 
 {% block content %}
 
-<h2>Welcome to Government Polytechnic Hingoli</h2>
+<h2 class="mb-4">Welcome to Government Polytechnic Hingoli</h2>
 
 <p>
 <strong>📚 Learn. 🌿 Grow. 🎯 Succeed.</strong><br>
 <strong>🎓 Your future starts here with quality technical education.</strong>
 </p>
 
-<h3 style="margin-bottom:0;">Quick Links</h3>
+<div class="row mt-4">
 
-<p style="margin-top:0;">
-👉🏻 <a href="{{ url_for('home') }}">Home</a><br>
-👉🏻 <a href="{{ url_for('students_page') }}">Students</a><br>
-👉🏻 <a href="{{ url_for('notice') }}">Notice</a><br>
-👉🏻 <a href="{{ url_for('about') }}">About College</a>
-</p>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Students
+                    <span class="badge bg-primary">Info</span>
+                </h5>
+                <p class="card-text">
+                    View all student records.
+                </p>
+                <a href="{{ url_for('students_page') }}" class="btn btn-primary">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Notice
+                    <span class="badge bg-warning text-dark">New</span>
+                </h5>
+                <p class="card-text">
+                    Check latest notices.
+                </p>
+                <a href="{{ url_for('notice') }}" class="btn btn-warning">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    About College
+                    <span class="badge bg-success">GPH</span>
+                </h5>
+                <p class="card-text">
+                    College information and courses.
+                </p>
+                <a href="{{ url_for('about') }}" class="btn btn-success">
+                    Open
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
-

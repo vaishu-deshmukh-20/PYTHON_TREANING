@@ -2,12 +2,24 @@
 
 {% block content %}
 
-<h1>Marks Records</h1>
+<h1 class="mb-4">Marks Records</h1>
 
-<ul>
-    {% for s in students %}
-        <li>{{ s.name }} - {{ s.marks }} marks</li>
-    {% endfor %}
-</ul>
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Student Name</th>
+            <th>Marks</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.marks }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

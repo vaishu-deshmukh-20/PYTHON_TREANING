@@ -2,16 +2,26 @@
 
 {% block content %}
 
-<h1>📢 Notice Board</h1>
+<div class="card shadow p-4">
+    <h1 class="text-danger">📢 Notice Board</h1>
 
-<ul>
-    <li>College will remain closed on Sunday.</li>
-    <li>Internal exams next month</li>
-    <li>Submit assignments on time.</li>
-</ul>
+    <ul class="list-group mt-3">
+        <li class="list-group-item">
+            College will remain closed on Sunday.
+        </li>
 
-<br>
+        <li class="list-group-item">
+            Internal exams next month.
+        </li>
 
-<a href="{{ url_for('home') }}">⬅ Back to Home</a>
+        <li class="list-group-item">
+            Submit assignments on time.
+        </li>
+    </ul>
+
+    <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+        ⬅ Back to Home
+    </a>
+</div>
 
 {% endblock %}

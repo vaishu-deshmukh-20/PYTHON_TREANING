@@ -1,5 +1,5 @@
 name = "Vaishnavi"
-marks = 85
+marks = 96
 city = "Hingoli"
 
 #Mrthod 1
