@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
+
+from database import get_db, search_students, add_student
 app.secret_key = "mysecretkey"
 
-students = [
+students_list = [
     {"roll": 101, "name": "Pranavi", "marks": 78, "status": "Pass"},
     {"roll": 102, "name": "Gauri", "marks": 92, "status": "Pass"},
     {"roll": 103, "name": "Savi", "marks": 66, "status": "Pass"},
@@ -14,24 +17,22 @@ students = [
 
 @app.route("/search")
 def search():
-    #step 1: Get query from url
-    q=request.args.get('q','')
-    #request.args - GET parameters
-    #step 2: 'q' - from - name = 'q'
+    q = request.args.get('q', '')
+
     conn = get_db()
 
     if q:
-        students = conn.execute('''SELECT * FROM students 
-                              WHERE name LIKE ?
-                              OR SUBJECT LIKE?
-                              OR ROLL LIKE ?''',
-                               ('%'+q+'%', '%'+q+'%', '%'+q+'%')).fetchall()
-    
+        students = conn.execute("""
+            SELECT * FROM students 
+            WHERE name LIKE ? OR roll LIKE ?
+        """, ('%' + q + '%', '%' + q + '%')).fetchall()
     else:
-        students = conn.execute('SELECT * FROM students ORDER BY ID DESC').fetchall()
+        students = conn.execute("""
+            SELECT * FROM students ORDER BY id DESC
+        """).fetchall()
+
     conn.close()
     return render_template('students.html', students=students, query=q)
-
 
 # HOME
 @app.route("/")
@@ -42,7 +43,40 @@ def home():
 # STUDENTS PAGE
 @app.route("/students")
 def students_page():
-    return render_template("students.html", students=students)
+
+    # ALWAYS create fresh calculated list (IMPORTANT)
+    clean_students = []
+
+    for s in students_list:
+        clean_students.append({
+            "roll": s["roll"],
+            "name": s["name"],
+            "marks": int(s["marks"]),
+            "status": s["status"]
+        })
+
+    excellent = len([s for s in clean_students if s["marks"] >= 75])
+    good = len([s for s in clean_students if 40 <= s["marks"] < 75])
+    need_improvement = len([s for s in clean_students if s["marks"] < 40])
+
+    return render_template(
+        "students.html",
+        students=clean_students,
+        excellent=excellent,
+        good=good,
+        need_improvement=need_improvement
+    )
+
+# view student details
+@app.route("/student/<int:roll>")
+def student_detail(roll):
+    student = next((s for s in students_list if s["roll"] == roll), None)
+
+    if student:
+        return render_template("details.html", student=student)
+
+    flash("Student not found!", "danger")
+    return redirect(url_for("students_page"))
 
 
 # NOTICE
@@ -65,7 +99,7 @@ def edit_student(roll):
 
     student = None
 
-    for s in students:
+    for s in students_list:
         if s["roll"] == roll:
             student = s
             break
@@ -80,6 +114,17 @@ def edit_student(roll):
 
     return render_template("edit_student.html", student=student)
 
+# =================
+# DELETE STUDENT
+# =================
+@app.route("/delete/<int:roll>")
+def delete_student(roll):
+    global students_list
+
+    students_list = [s for s in students_list if s["roll"] != roll]
+
+    flash("Student deleted successfully!", "success")
+    return redirect(url_for("students_page"))
 
 # =========================
 # ADD STUDENT
@@ -106,14 +151,14 @@ def add_students():
             "status": status
         }
 
-        students.append(new_student)
+        students_list.append(new_student)
 
         flash(f"Student {name} added successfully!", "success")
         return redirect(url_for("students_page"))
 
     return render_template("add_students.html")
 
-
 # RUN APP
 if __name__ == "__main__":
+
     app.run(debug=True)

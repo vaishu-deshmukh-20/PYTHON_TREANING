@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Search Students{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Search Student</h2>
+
+    <form method="GET" action="{{ url_for('search') }}">
+        <input type="text" name="query" class="form-control" placeholder="Enter roll or name">
+        <button type="submit" class="btn btn-primary mt-2">Search</button>
+    </form>
+
+    <hr>
+
+    {% if students %}
+        <h4>Results:</h4>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>Roll</th>
+                <th>Name</th>
+                <th>Marks</th>
+                <th>Status</th>
+            </tr>
+
+            {% for s in students %}
+            <tr>
+                <td>{{ s.roll }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.marks }}</td>
+                <td>{{ s.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% elif query %}
+        <p class="text-danger">No student found for "{{ query }}"</p>
+    {% endif %}
+
+</div>
+{% endblock %}

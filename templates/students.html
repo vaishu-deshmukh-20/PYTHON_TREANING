@@ -2,135 +2,141 @@
 
 {% block content %}
 
-<div class="container mt-4">
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="container mt-4"><div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
         <h1 class="fw-bold">All Students</h1>
-
-        <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
-            {{ students|length }} Records
-        </span>
+        <p class="text-muted mb-0">
+            Complete student records and performance
+        </p>
     </div>
 
-    <p class="text-muted text-center">
-        Complete student records and performance
-    </p>
+    <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
+        {{ students|length }} Records
+    </span>
+</div>
 
-    <div class="text-center mb-4">
+<div class="text-center mb-4">
 
-        <span class="badge bg-success p-2">
-            🏆 Excellent :
-            {{ students|selectattr('marks','ge',75)|list|length }}
-        </span>
+    <span class="badge bg-success p-2">
+        🏆 Excellent : {{ excellent }}
+    </span>
 
-        <span class="badge bg-primary p-2 ms-2">
-            👍 Good :
-            {{ students|selectattr('marks','ge',40)|rejectattr('marks','ge',75)|list|length }}
-        </span>
+    <span class="badge bg-primary p-2 ms-2">
+        ⭐ Good : {{ good }}
+    </span>
 
-        <span class="badge bg-warning text-dark p-2 ms-2">
-            📚 Average :
-            {{ students|selectattr('marks','lt',40)|list|length }}
-        </span>
+    <span class="badge bg-danger p-2 ms-2">
+        📘 Need Improvement : {{ need_improvement }}
+    </span>
 
-    </div>
+</div>
 
-    <div class="card shadow-lg border-0">
-        <div class="card-body">
+<div class="card shadow-lg border-0">
+    <div class="card-body">
 
-            <table class="table table-hover align-middle">
+        <table class="table table-hover align-middle">
 
-                <thead class="table-light">
-                    <tr>
-                        <th>Roll Number</th>
-                        <th>Name</th>
-                        <th>Marks</th>
-                        <th>Performance</th>
-                        <th>Grade</th>
+            <thead class="table-light">
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Name</th>
+                    <th>Marks</th>
+                    <th>Performance</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-                        <!-- EDIT COLUMN ADDED -->
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            <tbody>
 
-                <tbody>
+                {% for s in students %}
+                <tr>
 
-                    {% for s in students %}
-                    <tr>
+                    <td>{{ s.roll }}</td>
 
-                        <td>{{ s.roll }}</td>
+                    <td>
+                        <span class="badge bg-dark rounded-circle p-2">
+                            {{ s.name[0] }}
+                        </span>
+                        {{ s.name }}
+                    </td>
 
-                        <td>
-                            <span class="badge bg-dark rounded-circle p-2">
-                                {{ s.name[0] }}
-                            </span>
-                            {{ s.name }}
-                        </td>
+                    <td>
+                        <strong>{{ s.marks }}</strong>
+                        <br>
+                        <small class="text-muted">/100</small>
+                    </td>
 
-                        <td>
-                            <strong>{{ s.marks }}</strong>
-                            <br>
-                            <small class="text-muted">/100</small>
-                        </td>
+                    <td style="width:220px;">
 
-                        <td style="width:220px;">
+                        <div class="progress">
 
-                            <div class="progress">
-
-                                <div class="progress-bar
-                                {% if s.marks >= 75 %}
-                                    bg-success
-                                {% elif s.marks >= 40 %}
-                                    bg-primary
-                                {% else %}
-                                    bg-danger
-                                {% endif %}"
-                                style="width: {{ s.marks }}%">
-                                </div>
-
+                            <div class="progress-bar
+                            {% if s.marks >= 75 %}
+                                bg-success
+                            {% elif s.marks >= 40 %}
+                                bg-primary
+                            {% else %}
+                                bg-danger
+                            {% endif %}"
+                            style="width: {{ s.marks }}%">
                             </div>
 
-                        </td>
+                        </div>
 
-                        <td>
+                    </td>
 
-                            {% if s.marks >= 90 %}
-                                <span class="badge bg-success">
-                                    🏆 Excellent
-                                </span>
+                    <td>
 
-                            {% elif s.marks >= 70 %}
-                                <span class="badge bg-primary">
-                                    👍 Good
-                                </span>
+                        {% if s.marks >= 90 %}
+                            <span class="badge bg-success">
+                                🏆 Excellent
+                            </span>
 
-                            {% else %}
-                                <span class="badge bg-warning text-dark">
-                                    📚 Average
-                                </span>
+                        {% elif s.marks >= 70 %}
+                            <span class="badge bg-primary">
+                                👍 Good
+                            </span>
 
-                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-warning text-dark">
+                                📘Need Improvment
+                            </span>
 
-                        </td>
+                        {% endif %}
 
-                        <!-- EDIT BUTTON ADDED HERE -->
-                        <td>
+                    </td>
+
+                    <td>
+                        <div class="d-flex gap-2">
+
+                            <a href="{{ url_for('student_detail', roll=s['roll']) }}"
+                               class="btn btn-info btn-sm">
+                            View
+                        </a>
+
                             <a href="{{ url_for('edit_student', roll=s.roll) }}"
                                class="btn btn-warning btn-sm">
                                 Edit
                             </a>
-                        </td>
 
-                    </tr>
-                    {% endfor %}
+                            <a href="{{ url_for('delete_student', roll=s.roll) }}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Delete this student?')">
+                                Delete
+                            </a>
 
-                </tbody>
+                        </div>
+                    </td>
 
-            </table>
+                </tr>
+                {% endfor %}
 
-        </div>
+            </tbody>
+
+        </table>
+
     </div>
-
 </div>
 
-{% endblock %}
+</div>{% endblock %}
