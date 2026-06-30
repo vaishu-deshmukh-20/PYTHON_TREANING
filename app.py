@@ -96,6 +96,35 @@ def logout():
     flash ('you have been logged out.','info')
     return redirect(url_for('home'))
 
+@app.route('/filter')
+def filter_students():
+
+    subject = request.args.get('subject', '')
+    grade = request.args.get('grade', '')
+
+    conn = get_db()
+
+    subjects = conn.execute('''
+        SELECT DISTINCT subject
+        FROM students
+        WHERE subject IS NOT NULL
+        AND subject != ""
+        ORDER BY subject ASC
+    ''').fetchall()
+
+    query = "SELECT * FROM students"
+    students = conn.execute(query).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "filter.html",
+        students=students,
+        subjects=subjects,
+        selected_subject=subject,
+        selected_grade=grade
+    )    
+    
 # 404.html
 def page_not_found(e):
     return render_template('404.html'),404
@@ -169,7 +198,7 @@ def add_students():
     return render_template("add_students.html")
 
 # RUN APP
+init_db()
 if __name__ == "__main__":
-
-    app.run(debug=True)
+   app.run(debug=True)
     
