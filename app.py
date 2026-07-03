@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__, template_folder="templates")
 
-from database import get_db, search_students, add_student
+from database import get_db, search_students, add_student,init_db, delete_student, update_student
 app.secret_key = "mysecretkey"
 
 students_list = [
@@ -198,7 +198,6 @@ def add_students():
     return render_template("add_students.html")
 
 # RUN APP
-init_db()
+init_db()  # Initialize the database
 if __name__ == "__main__":
-   app.run(debug=True)
-    
+    app.run(debug=True)
